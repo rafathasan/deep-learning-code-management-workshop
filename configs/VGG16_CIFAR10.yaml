@@ -1,0 +1,106 @@
+project_config:
+  name: &name CIFAR10
+  version: &version version_0
+  test_version: &test_version test_version_0 
+  log_dir: &log_dir __logs__/
+  ckpt_dir: &ckpt_dir __logs__/CIFAR10/version_0/
+  best_ckpt_name: &best_ckpt_name last-best
+model_config:
+  name: VGG16
+  param:
+    lr: 0.1
+    num_classes: 10
+    lrs_step_size: 1
+    lrs_gamma: 0.9
+    class_labels: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
+datamodule_config:
+  name: CIFAR10
+  param:
+      data_path: __data__
+      batch_size: 512
+      test_batch_size: 1024
+      num_workers: 16
+      shuffle: true
+      train_transform:
+        __version__: 1.3.1
+        transform:
+          __class_fullname__: Compose
+          p: 1.0
+          transforms:
+          - __class_fullname__: HorizontalFlip
+            always_apply: false
+            p: 0.5
+          - __class_fullname__: Normalize
+            mean: [0, 0, 0]
+            std: [1, 1, 1]
+            max_pixel_value: 255
+            always_apply: true
+            p: 1.0
+          - __class_fullname__: ToTensorV2
+            always_apply: true
+            p: 1.0
+      test_transform:
+        __version__: 1.3.1
+        transform:
+          __class_fullname__: Compose
+          p: 1.0
+          transforms:
+          - __class_fullname__: Normalize
+            mean: [0, 0, 0]
+            std: [1, 1, 1]
+            max_pixel_value: 255
+            always_apply: true
+            p: 1.0
+          - __class_fullname__: ToTensorV2
+            always_apply: true
+            p: 1.0
+trainer_config:
+  max_epochs: 10
+  devices: 1
+  accelerator: cuda
+  num_nodes: 1
+  strategy: auto
+  num_sanity_val_steps: 2
+  # fast_dev_run: true
+  callbacks:
+    - name: ModelCheckpoint
+      param:
+        dirpath: *ckpt_dir
+        # filename: last-best-{epoch:03d}-{IoU:.4f}
+        filename: *best_ckpt_name
+        # save_top_k: 1
+        monitor: 'IoU'
+        mode: 'max'
+        save_last: true
+        verbose: true
+    # - name: EarlyStopping
+    #   param:
+    #     monitor: 'IoU'
+    #     patience: 3
+    #     mode: max
+    # - name: LearningRateMonitor
+    #   param:
+    #     logging_interval: epoch
+  logger:
+    - name: CSVLogger
+      param:
+        save_dir: *log_dir
+        name: *name
+        version: *version
+    - name: WandbLogger
+      param:
+        save_dir: *log_dir
+        project: *name
+        name: *version
+        id: *version
+test_trainer_config:
+  devices: 1
+  accelerator: cuda
+  num_nodes: 1
+  strategy: auto
+  logger:
+    - name: CSVLogger
+      param:
+        save_dir: *log_dir
+        name: *name
+        version: *test_version
