@@ -21,7 +21,7 @@ datamodule_config:
       num_workers: 16
       shuffle: true
       k_folds: 5
-      k: 0
+      k: -1
       train_transform:
         __version__: 1.3.1
         transform:

@@ -27,20 +27,24 @@ class CIFAR10(pl.LightningDataModule):
 
     def setup(self, stage=None):
         if stage == 'fit' or stage is None:
-            train_val_data = datasets.CIFAR10(root=self.data_path, train=True, download=False, transform=self.train_transform)
-            
-            # Calculate the size of each fold
-            fold_size = len(train_val_data) // self.k_folds
-            val_start = fold_size * self.k
-            val_end = val_start + fold_size
-            
-            # Split the data into train and validation sets
-            indices = list(range(len(train_val_data)))
-            train_indices = indices[:val_start] + indices[val_end:]
-            val_indices = indices[val_start:val_end]
-            
-            self.train_data = Subset(train_val_data, train_indices)
-            self.val_data = Subset(train_val_data, val_indices)
+            if self.k < 0:
+                train_val_data = datasets.CIFAR10(root=self.data_path, train=True, download=False, transform=self.train_transform)
+                self.train_data, self.val_data = random_split(train_val_data, [40000, 10000])
+            else:
+                train_val_data = datasets.CIFAR10(root=self.data_path, train=True, download=False, transform=self.train_transform)
+                
+                # Calculate the size of each fold
+                fold_size = len(train_val_data) // self.k_folds
+                val_start = fold_size * self.k
+                val_end = val_start + fold_size
+                
+                # Split the data into train and validation sets
+                indices = list(range(len(train_val_data)))
+                train_indices = indices[:val_start] + indices[val_end:]
+                val_indices = indices[val_start:val_end]
+                
+                self.train_data = Subset(train_val_data, train_indices)
+                self.val_data = Subset(train_val_data, val_indices)
         
         if stage == 'test' or stage == 'predict' or stage is None:
             self.test_data = datasets.CIFAR10(root=self.data_path, train=False, download=False, transform=self.test_transform)
