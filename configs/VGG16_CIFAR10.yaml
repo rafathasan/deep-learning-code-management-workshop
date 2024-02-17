@@ -1,7 +1,7 @@
 project_config:
   name: &name CIFAR10-experiment
-  version: &version fold_0
-  test_version: &test_version test_fold_0 
+  version: &version regular
+  test_version: &test_version test_regular
   log_dir: &log_dir __logs__/
   best_ckpt_name: &best_ckpt_name last-best
 model_config:

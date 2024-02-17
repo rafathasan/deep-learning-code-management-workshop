@@ -26,10 +26,10 @@ class VGG16(pl.LightningModule):
         self.model.classifier[6] = torch.nn.Linear(4096, self.num_classes)
 
         self.metric = MetricCollection({
-            "F1": F1Score('multiclass', num_classes=self.num_classes, average='macro', ignore_index=0),
-            "IoU": JaccardIndex('multiclass', num_classes=self.num_classes, average='macro', ignore_index=0),
+            "F1": F1Score('multiclass', num_classes=self.num_classes, average='macro'),
+            # "IoU": JaccardIndex('multiclass', num_classes=self.num_classes, average='macro'),
             "class_F1": ClasswiseWrapper(F1Score('multiclass', num_classes=self.num_classes, average=None), labels=self.hparams.class_labels, prefix="F1_"),
-            "class_IoU": ClasswiseWrapper(JaccardIndex('multiclass', num_classes=self.num_classes, average=None), labels=self.hparams.class_labels, prefix="IoU_"),
+            # "class_IoU": ClasswiseWrapper(JaccardIndex('multiclass', num_classes=self.num_classes, average=None), labels=self.hparams.class_labels, prefix="IoU_"),
         })
 
     def forward(self, x):
