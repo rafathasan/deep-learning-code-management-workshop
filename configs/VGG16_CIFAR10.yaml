@@ -58,7 +58,7 @@ datamodule_config:
 trainer_config:
   max_epochs: 10
   devices: 1
-  accelerator: cpu
+  accelerator: cuda
   num_nodes: 1
   strategy: auto
   num_sanity_val_steps: 2
@@ -87,7 +87,7 @@ trainer_config:
         id: *version
 test_trainer_config:
   devices: 1
-  accelerator: cpu
+  accelerator: cuda
   num_nodes: 1
   strategy: auto
   logger:
