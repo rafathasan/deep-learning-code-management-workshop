@@ -11,7 +11,7 @@ Welcome to the repository for the "Workshop on Hands-on Deep Learning Coding & C
 ## 📅 Event Details
 -  **Event Name:** Workshop on Hands-on Deep Learning Coding & Code Management 
 -  **Organized by:** Center for Computational & Data Sciences ([CCDS](https://ccds.ai/)) at Independent University Bangladesh ([IUB](https://www.iub.edu.bd/)) 
--  **Session:** Session 2 - Deep Learning Code Management 
+-  **Session:** Day 2 - Session 2 - Deep Learning Code Management 
 -  **Event Link:** [Workshop Event](https://ccds.ai/event/workshop-on-hands-on-deep-learning-coding-code-management/)
 
 ## 🌐 Session Overview
