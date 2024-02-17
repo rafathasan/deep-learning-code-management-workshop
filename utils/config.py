@@ -60,9 +60,9 @@ class Config:
             self.config['project_config']['version']
         )
 
-        if path and os.path.exists(path):
-            return path
-        return None
+        os.makedirs(path, exist_ok=True)
+
+        return path
 
     def get_best_checkpoint(self):
         path = os.path.join(

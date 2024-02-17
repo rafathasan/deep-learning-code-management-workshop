@@ -6,6 +6,9 @@ import torch
 import os
 import torchvision
 from utils.config import Config
+from pytorch_lightning import seed_everything
+
+seed_everything(42, workers=True)
 
 @click.group()
 def cli():
