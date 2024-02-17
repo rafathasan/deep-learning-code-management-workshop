@@ -30,7 +30,7 @@ class Config:
         loggers_config = self.config['trainer_config']['logger']
 
         # Instantiate callbacks and loggers using the provided configurations
-        callbacks = [getattr(pl.callbacks, cb['name'])(**cb['param']) for cb in callbacks_config]
+        callbacks = [getattr(pl.callbacks, cb['name'])(**{**cb['param'], "dirpath": self.get_checkpoint_dir()}) for cb in callbacks_config]
         loggers = [getattr(pl.loggers, lg['name'])(**lg['param']) for lg in loggers_config]
 
         # Create Trainer with custom callbacks and loggers
@@ -53,11 +53,20 @@ class Config:
 
         return trainer_config
 
-    def get_best_checkpoint(self):
+    def get_checkpoint_dir(self):
         path = os.path.join(
             self.config['project_config']['log_dir'],
             self.config['project_config']['name'],
-            self.config['project_config']['version'],
+            self.config['project_config']['version']
+        )
+
+        if path and os.path.exists(path):
+            return path
+        return None
+
+    def get_best_checkpoint(self):
+        path = os.path.join(
+            self.get_checkpoint_dir(),
             self.config['project_config']['best_ckpt_name']+'.ckpt',
         )
 
@@ -67,9 +76,7 @@ class Config:
 
     def get_last_checkpoint(self):
         path = os.path.join(
-            self.config['project_config']['log_dir'],
-            self.config['project_config']['name'],
-            self.config['project_config']['version'],
+            self.get_checkpoint_dir(),
             'last.ckpt',
         )
 
