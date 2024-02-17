@@ -62,8 +62,8 @@ trainer_config:
   num_nodes: 1
   strategy: auto
   num_sanity_val_steps: 2
-  # limit_train_batches: 10
-  # limit_val_batches: 1
+  limit_train_batches: 5
+  limit_val_batches: 1
   # fast_dev_run: true
   callbacks:
     - name: ModelCheckpoint
@@ -96,3 +96,4 @@ test_trainer_config:
         save_dir: *log_dir
         name: *name
         version: *test_version
+wandb_key: null

@@ -7,6 +7,7 @@ import os
 import torchvision
 from utils.config import Config
 from pytorch_lightning import seed_everything
+import wandb
 
 seed_everything(42, workers=True)
 
@@ -21,9 +22,8 @@ def train(config):
     Train a PyTorch Lightning model using the provided config file.
     """
     config = Config(config)
-
-    # if 'wandb_config' in config and 'key' in config['wandb_config']:
-    #     wandb.login(key=config['wandb_config']["key"])
+    
+    wandb.login(key=config.get_wandb_key())
     
     # Create DataModule instance
     datamodule = config.get_datamodule()

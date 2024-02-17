@@ -83,3 +83,6 @@ class Config:
         if path and os.path.exists(path):
             return path
         return None
+
+    def get_wandb_key(self):
+        return self.config['wandb_key']
