@@ -1,9 +1,9 @@
 project_config:
   name: &name CIFAR10
-  version: &version version_0
+  version: &version fold_0
   test_version: &test_version test_version_0 
   log_dir: &log_dir __logs__/
-  ckpt_dir: &ckpt_dir __logs__/CIFAR10/version_0/
+  ckpt_dir: &ckpt_dir __logs__/CIFAR10/fold_0/
   best_ckpt_name: &best_ckpt_name last-best
 model_config:
   name: VGG16
@@ -21,6 +21,8 @@ datamodule_config:
       test_batch_size: 1024
       num_workers: 16
       shuffle: true
+      k_folds: 5
+      k: 1
       train_transform:
         __version__: 1.3.1
         transform:
@@ -57,10 +59,12 @@ datamodule_config:
 trainer_config:
   max_epochs: 10
   devices: 1
-  accelerator: cuda
+  accelerator: cpu
   num_nodes: 1
   strategy: auto
   num_sanity_val_steps: 2
+  # limit_train_batches: 50
+  # limit_val_batches: 10
   # fast_dev_run: true
   callbacks:
     - name: ModelCheckpoint
@@ -73,14 +77,6 @@ trainer_config:
         mode: 'max'
         save_last: true
         verbose: true
-    # - name: EarlyStopping
-    #   param:
-    #     monitor: 'IoU'
-    #     patience: 3
-    #     mode: max
-    # - name: LearningRateMonitor
-    #   param:
-    #     logging_interval: epoch
   logger:
     - name: CSVLogger
       param:
