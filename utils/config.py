@@ -18,11 +18,11 @@ class Config:
     
     def get_modelmodule(self):
         # Dynamically import the Model class from the 'models' directory
-        model_module = importlib.import_module('models.' + self.config['model_config']['name'])
-        ModelClass = getattr(model_module, self.config['model_config']['name'])
+        modelmodule_module = importlib.import_module('models.' + self.config['modelmodule_config']['name'])
+        ModelClass = getattr(modelmodule_module, self.config['modelmodule_config']['name'])
         
         # Create Model instance
-        return ModelClass(**self.config['model_config']['param'])
+        return ModelClass(**self.config['modelmodule_config']['param'])
 
     def get_trainer_config(self):
         # Extract callbacks and loggers configurations

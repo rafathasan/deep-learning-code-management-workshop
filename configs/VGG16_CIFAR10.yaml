@@ -4,7 +4,7 @@ project_config:
   test_version: &test_version test_regular
   log_dir: &log_dir __logs__/
   best_ckpt_name: &best_ckpt_name last-best
-model_config:
+modelmodule_config:
   name: VGG16
   param:
     lr: 0.1
