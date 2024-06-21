@@ -69,7 +69,7 @@ trainer_config:
     - name: ModelCheckpoint
       param:
         filename: *best_ckpt_name
-        monitor: 'IoU'
+        monitor: 'F1'
         mode: 'max'
         save_last: true
         verbose: true
